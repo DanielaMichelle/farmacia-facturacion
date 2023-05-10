@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout}">
+<head th:replace="layout :: head">
+<meta charset="UTF-8">
+<title>Sistema de Compras de Farmacia</title>
+
+<body th:replace="layout :: wrapper">
+
+<div th:fragment="mi-contenido">
+
+ <div style="padding: 30px;">
+    <form th:action="@{/guardarSucursal}" th:object="${sucursal}" method="POST">
+	  <div class="form-group">
+	    <label class="t-MediaList-title" style="padding: 5px;">Nombre:</label>
+	    <input th:field="*{nombre}" id="nombre" name="nombre" type="text" class="form-control" required autofocus="autofocus" style="padding: 10px; width: 50%;">
+	  </div>
+	  <div class="form-group">
+	    <label class="t-MediaList-title" for="direccion" style="padding: 5px;">Direccion:</label>
+	    <input th:field="*{direccion}" id="direccion" name="direccion" type="text" class="form-control" required autofocus="autofocus" style="padding: 10px; width: 50%;">
+	  </div>
+	  <div class="form-group">
+	    <label class="t-MediaList-title" style="padding: 5px;">Telefono:</label>
+	    <input th:field="*{telefono}" id="telefono" name="telefono" type="text" class="form-control" required autofocus="autofocus" style="padding: 10px; width: 50%;">
+	  </div>
+	  <div class="form-group">
+	    <label class="t-MediaList-title" style="padding: 5px;">Correo Electronico:</label>
+	    <input th:field="*{correo_electronico}" id="correo_electronico" name="correo_electronico" type="email" class="form-control" required autofocus="autofocus" style="padding: 10px; width: 50%;">
+	  </div>
+	  <br><br>
+	  <div class="form-group">
+	    <button type="submit" class="btn btn-success t-Button-label" style="font-size: 15px;">
+          Guardar
+        </button>
+	  </div>
+	</form>
+
+  </div>  
+<script>
+
+	document.getElementById("titulo_doc").innerHTML = "Nueva Sucursal";
+	
+
+</script>
+
+</div>
+
+</body>
+</html>

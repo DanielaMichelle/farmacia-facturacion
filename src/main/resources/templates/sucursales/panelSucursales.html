@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout}">
+<head th:replace="layout :: head">
+<meta charset="UTF-8">
+<title>Sistema de Compras de Farmacia</title>
+
+<body th:replace="layout :: wrapper">
+
+<div th:fragment="mi-contenido">
+
+ <div>
+ 	  <div th:if="${errorPermiso}" class="alert alert-danger" th:text="${errorPermiso}"></div>
+      <a th:href="@{/sucursales/nuevaSucursal}" class="btn btn-flat btn-success btn-md mb-3" style="font-size: 15px;">Nueva Sucursal</a>      
+	  <br><br><br>
+	  <table class="table" id="table_sucursales">
+	    <thead>
+	        <tr>
+	            <th>Nombre</th>
+	            <th>Dirección</th>
+	            <th>Teléfono</th>
+	            <th>Correo electrónico</th>
+	            <th>Acciones</th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	        <tr th:each="sucursal : ${sucursales}">
+				<td th:text="${sucursal.nombre}" style="width: 20%;">Nombre</td>
+				<td th:text="${sucursal.direccion}">Dirección</td>
+				<td th:text="${sucursal.telefono}">Telefono</td>
+				<td th:text="${sucursal.correo_electronico}">Correo electrónico</td>
+				<td>
+					<a id="btnEditar" class="btn btn-primary btn-sm" 
+					   th:href="@{/sucursales/formularioEditarSucursal/{id}(id=${sucursal.id})}"
+					   title="Editar">
+					   <i class="fa fa-edit"></i>
+					</a>
+        		</td>
+	    </tbody>
+	</table>
+  </div>  
+
+<script>
+	document.getElementById("titulo_doc").innerHTML = "Sucursales";
+</script>
+
+</div>
+
+</body>
+
+<script>
+	$(document).ready(function() {
+	    $('#table_sucursales').DataTable({
+	        "language": {
+	            "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"
+	        }
+	    });
+	});
+	
+</script>
+
+</html>

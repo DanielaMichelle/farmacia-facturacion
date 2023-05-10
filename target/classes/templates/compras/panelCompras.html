@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout}">
+<head th:replace="layout :: head">
+<meta charset="UTF-8">
+<title>Sistema de Compras de Farmacia</title>
+
+<body th:replace="layout :: wrapper">
+
+<div th:fragment="mi-contenido">
+
+ <div>
+ 
+  <a th:href="@{/compras/nuevaCompra}" class="btn btn-flat btn-success btn-md mb-3" style="font-size: 15px;">Nueva Compra</a>      
+  <br><br><br>
+  <table class="table" id="table_compras">
+    <thead>
+        <tr>
+            <th>Fecha de Compra</th>
+            <th>Hora de Compra</th>
+            <th>Total</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="compra : ${compras}">
+        	<td th:text="${compra.fecha_compra}">Fecha de Compra</td>
+            <td th:text="${compra.hora_compra}">Hora de Compra</td>
+            <td th:text="${compra.total}">Total</td>
+            <td>
+				<a class="btn btn-primary btn-sm"
+				   th:href="@{/mostrarCompras/{id}(id=${compra.id})}">
+		          Pedidos de Compra
+		        </a>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+</div>
+  
+
+<script>
+
+	document.getElementById("titulo_doc").innerHTML = "Compras";
+	  
+
+</script>
+
+</div>
+
+</body>
+
+<script>
+	$(document).ready(function() {
+	    $('#table_compras').DataTable({
+	        "language": {
+	            "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"
+	        }
+	    });
+	});
+	
+</script>
+
+</html>

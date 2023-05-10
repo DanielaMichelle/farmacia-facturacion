@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout}">
+<head th:replace="layout :: head">
+<meta charset="UTF-8">
+<title>Sistema de Compras de Farmacia</title>
+
+<body th:replace="layout :: wrapper">
+
+<div th:fragment="mi-contenido">
+
+ <div style="padding: 30px;">
+ 	<h3>
+    	El stock actual del Producto "[[${nombreProducto}]]"" es: [[${stockActual}]]
+    </h3><br>
+	<h3>Si deseas actualizar el Stock del Producto ingresar la nueva cantidad aquí.</h3>
+	<form th:action="@{/guardarStock/{id}(id=${producto.id})}" th:object="${stock}" method="post">
+	    <div class="form-group">
+	        <label for="cantidad">Cantidad:</label>
+	        <input th:field="*{cantidad}" name="cantidad" type="number" class="form-control" required />
+	    </div>
+	    <button type="submit" class="btn btn-primary">Guardar</button>
+	</form>
+
+  </div>  
+<script>
+
+	document.getElementById("titulo_doc").innerHTML = "Stock del Producto";
+	
+
+</script>
+
+</div>
+
+</body>
+</html>

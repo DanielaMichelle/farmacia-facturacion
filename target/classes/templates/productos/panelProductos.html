@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout}">
+<head th:replace="layout :: head">
+<meta charset="UTF-8">
+<title>Sistema de Compras de Farmacia</title>
+
+<body th:replace="layout :: wrapper">
+
+<div th:fragment="mi-contenido">
+
+  <div>
+  	  <div th:if="${errorPermiso}" class="alert alert-danger" th:text="${errorPermiso}"></div>
+	  <a th:href="@{/productos/nuevoProducto}" class="btn btn-flat btn-success btn-md mb-3" style="font-size: 15px;">Nuevo Producto</a>      
+	  <br><br><br>
+	  <table class="table" id="table_productos">
+	    <thead>
+	        <tr>
+	            <th>Nombre</th>
+	            <th>Precio</th>
+	            <th>Acciones</th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	        <tr th:each="producto : ${productos}">
+				<td th:text="${producto.nombre}">Nombre</td>
+				<td th:text="${producto.precio}">Precio</td>
+				<td>
+        			<a id="btnEditar" class="btn btn-primary btn-sm" 
+        			   th:href="@{/productos/formularioEditarProducto/{id}(id=${producto.id})}"
+        			   title="Editar">
+						<i class="fa fa-edit"></i>
+					</a>
+					<a id="btnVerStock" class="btn btn-primary btn-sm" 
+					   th:href="@{/productos/formularioStock/{id}(id=${producto.id})}"
+					   title="Ver Stock">
+						<i class="fa fa-book"></i>
+					</a>
+        		</td>
+	    </tbody>
+	</table>
+  </div>  
+
+<script>
+
+	document.getElementById("titulo_doc").innerHTML = "Productos";
+	  
+
+</script>
+
+</div>
+
+</body>
+
+<script>
+	$(document).ready(function() {
+	    $('#table_productos').DataTable({
+	        "language": {
+	            "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"
+	        }
+	    });
+	});
+	
+</script>
+
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout}">
+<head th:replace="layout :: head">
+<meta charset="UTF-8">
+<title>Sistema de Compras de Farmacia</title>
+
+<body th:replace="layout :: wrapper">
+
+<div th:fragment="mi-contenido">
+
+ <div style="padding: 30px;">
+    <form th:action="@{/registro}" method="post" th:object="${usuario}">
+		<div class="form-group">
+			<label class="control-label">Nombre : </label> 
+			<input id="nombre" name="nombre" type="text" class="form-control" th:field="*{nombre}"
+				   required autofocus="autofocus">
+		</div>
+		<div class="form-group">
+			<label class="control-label">Apellido : </label> 
+			<input id="apellido" name="apellido" class="form-control" th:field="*{apellido}"
+				   required autofocus="autofocus">
+		</div>
+		<div class="form-group">
+			<label class="control-label">Correo : </label> 
+			<input id="email" name="apellido" type="email" class="form-control" th:field="*{email}"
+				   required autofocus="autofocus">
+		</div>
+		<div class="form-group">
+			<label class="control-label">Contraseña : </label> 
+			<input type="password" name="password" id="password" class="form-control" th:field="*{password}"
+				   required autofocus="autofocus">
+		</div>
+		<div class="form-group">
+			<label class="control-label">Sucursal : </label> 
+			<select id="sucursalSeleccionado" name="sucursalSeleccionado" required class="select2_single form-control">
+			  <option value="">Seleccione una Sucursal</option>
+			  <option th:each="sucursal : ${sucursales}"
+			          th:value="${sucursal.id}"
+			          th:text="${sucursal.nombre}">Sucursal</option>
+			</select>
+			<input type="hidden" readonly id="inputSucursalSeleccionado"  name="inputSucursalSeleccionado">
+		</div>
+		<div class="form-group">
+			<label class="control-label" for="password">Rol : </label> 
+			<select id="rolSeleccionado" name="rolSeleccionado" required class="select2_single form-control">
+			  <option value="">Seleccione un Rol</option>
+			  <option th:each="rol : ${roles}"
+			          th:value="${rol.id}"
+			          th:text="${rol.nombre}">Rol</option>
+			</select>
+			<input type="hidden" readonly id="inputRolSeleccionado" name="inputRolSeleccionado">
+		</div>
+		<br>
+		<div class="form-group">
+				<button type="submit" class="btn btn-success">Guardar</button>
+		</div>
+	</form>
+
+  </div>  
+<script>
+
+	document.getElementById("titulo_doc").innerHTML = "Nuevo Trabajador";
+	
+
+</script>
+
+</div>
+
+</body>
+
+<script>
+  	// Obtener los elementos select y el input oculto
+	const selectSucursal = document.getElementById("sucursalSeleccionado");
+	const inputSucursal = document.getElementById("inputSucursalSeleccionado");
+	
+	// Agregar un evento onchange al select
+	selectSucursal.addEventListener("change", function() 
+	{
+	  // Obtener el valor de la opción seleccionada
+	  const valorSeleccionado = selectSucursal.value;
+	
+	  // Asignar el valor al input oculto
+	  inputSucursal.value = valorSeleccionado;
+	});
+	
+	// Obtener el elemento select y el input oculto
+	const selectRol = document.getElementById("rolSeleccionado");
+	const inputRol = document.getElementById("inputRolSeleccionado");
+	
+	// Agregar un evento onchange al select
+	selectRol.addEventListener("change", function() 
+	{
+	  // Obtener el valor de la opción seleccionada
+	  const valorSeleccionado = selectRol.value;
+	  
+	  // Asignar el valor al input oculto
+	  inputRol.value = valorSeleccionado;
+	});
+</script>
+
+</html>

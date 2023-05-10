@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout}">
+<head th:replace="layout :: head">
+<meta charset="UTF-8">
+<title>Sistema de Compras de Farmacia</title>
+
+<body th:replace="layout :: wrapper">
+
+<div th:fragment="mi-contenido">
+
+ <div>
+  <a th:href="@{/compras/formularioDetalle/{id}(id=${id})}" class="btn btn-flat btn-success btn-md mb-3" style="font-size: 15px;">Agregar Pedido</a>
+  <br><br><br>
+  <table class="table" id="table_compras">
+    <thead>
+        <tr>
+            <th style="text-align: center;">Producto</th>
+            <th style="text-align: center;">Precio Unitario</th>
+            <th style="text-align: center;">Cantidad</th>
+            <th style="text-align: center;">Subtotal</th>
+            <th style="text-align: center;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="detalleCompra : ${detallesCompra}">
+        	<td style="text-align: center;" th:text="${detalleCompra.nombreProducto}">Producto</td>
+        	<td style="text-align: center;" th:text="${detalleCompra.precioUnitario}">Precio Unitario</td>
+            <td style="text-align: center;" th:text="${detalleCompra.cantidad}">Cantidad</td>
+            <td style="text-align: center;" th:text="${detalleCompra.subtotal}" class="sumar">Subtotal</td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+</div>
+  
+
+<script>
+
+	document.getElementById("titulo_doc").innerHTML = "Pedidos de la Compra";
+	  
+
+</script>
+
+</div>
+
+</body>
+
+ 	<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/vfs_fonts.js"></script>
+<script>
+        $(document).ready(function() {
+		  $('#table_compras').DataTable({
+		    dom: 'Bfrtip',
+		    "searching": false,
+		    buttons: [
+		      {
+		        extend: 'pdfHtml5',
+		        text: 'Exportar a PDF',
+		        className: 'btn btn-primary',
+		        footer: true
+		      }
+		    ],
+		    language: {
+		      url: "//cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"
+		    },
+		    footerCallback: function (row, data, start, end, display) {
+		      var api = this.api();
+		      api.columns('.sumar', { page: 'current', selector: 'td' }).every(function () {
+		        var sum = this
+		          .data()
+		          .reduce(function (a, b) {
+		            return parseFloat(a) + parseFloat(b);
+		          }, 0);
+		        console.log('Suma: ' + sum);
+		        $(this.footer()).html('Total: S/. ' + sum);
+		      });
+		    }
+		  });
+		});
+    </script>
+
+</html>
