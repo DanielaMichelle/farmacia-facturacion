@@ -11,10 +11,12 @@ public interface UsuarioServicio extends UserDetailsService
 	public List<InfoUsuario> mostrarUsuarios();
 	public Usuario guardar(UsuarioRegistroDTO registroDTO);
 	public String recuperarNombrePorEmail(String email);
+	public String recuperarEmailPorDni(String dni);
 	public String recuperarApellidoPorEmail(String email);
 	public String recuperarNombrePerfilPorEmail(String email);
 	public Long recuperarIdSucursalPorEmail(String email);
 	public String recuperarNombreSucursalPorEmail(String email);
 	public Usuario buscarUsuario(String username, String password);
+	public Usuario buscarUsuarioPorDni(String username, String password);
 	public List<Usuario> listarUsuarios();
 }

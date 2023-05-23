@@ -9,6 +9,7 @@ public class UsuarioRegistroDTO
 	private String email;
 	private Sucursal sucursal;
 	private String password;
+	private String dni;
 	//Constructores, getters y setters
 	public UsuarioRegistroDTO() 
 	{
@@ -70,5 +71,13 @@ public class UsuarioRegistroDTO
 	public void setPassword(String password) 
 	{
 		this.password = password;
+	}
+	public String getDni() 
+	{
+		return dni;
+	}
+	public void setDni(String dni) 
+	{
+		this.dni = dni;
 	}
 }

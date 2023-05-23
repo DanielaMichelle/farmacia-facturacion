@@ -28,7 +28,10 @@
 	  </div>
 	  <div class="form-group">
 	    <label class="t-MediaList-title" style="padding: 5px;">Cantidad:</label>
-	    <input th:field="*{cantidad}" id="cantidad" type="number" class="form-control" required autofocus="autofocus" style="padding: 10px; width: 50%;">
+	    <input th:field="*{cantidad}" id="cantidad" name="cantidad" type="number" class="form-control" 
+       			required maxlength="10" style="width: 130px;"
+      			oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);
+                if (this.value <= 0) this.value = '';">
 	  </div>
 	  <br><br>
 	  <div class="form-group">

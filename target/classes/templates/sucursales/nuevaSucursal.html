@@ -14,23 +14,47 @@
     <form th:action="@{/guardarSucursal}" th:object="${sucursal}" method="POST">
 	  <div class="form-group">
 	    <label class="t-MediaList-title" style="padding: 5px;">Nombre:</label>
-	    <input th:field="*{nombre}" id="nombre" name="nombre" type="text" class="form-control" required autofocus="autofocus" style="padding: 10px; width: 50%;">
+	    <input th:field="*{nombre}" id="nombre" name="nombre" type="text" class="form-control" required 
+		    autofocus="autofocus" style="padding: 10px; width: 50%;" 
+		    autocomplete="off"
+		    oninput="validarFormulario()">
 	  </div>
+	  
+	  <p id="errorCaracteresNombre" style="color: red;"></p>
+	  
 	  <div class="form-group">
 	    <label class="t-MediaList-title" for="direccion" style="padding: 5px;">Direccion:</label>
-	    <input th:field="*{direccion}" id="direccion" name="direccion" type="text" class="form-control" required autofocus="autofocus" style="padding: 10px; width: 50%;">
+	    <input th:field="*{direccion}" id="direccion" name="direccion" type="text" class="form-control" required 
+	    	autofocus="autofocus" style="padding: 10px; width: 50%;" 
+	    	autocomplete="off" data-autocomplete="no"
+	    	oninput="validarFormulario()">
 	  </div>
+	  
+	  <p id="errorCaracteresDireccion" style="color: red;"></p>
+	  
 	  <div class="form-group">
 	    <label class="t-MediaList-title" style="padding: 5px;">Telefono:</label>
-	    <input th:field="*{telefono}" id="telefono" name="telefono" type="text" class="form-control" required autofocus="autofocus" style="padding: 10px; width: 50%;">
+	    <input th:field="*{telefono}" id="telefono" name="telefono" type="text" class="form-control" 
+	       required autofocus="autofocus" style="padding: 10px; width: 50%;" 
+	       autocomplete="off"
+	       oninput="validarFormulario()" maxlength="20">
 	  </div>
+	  
+	  <p id="errorNumeros" style="color: red;"></p>
+
 	  <div class="form-group">
 	    <label class="t-MediaList-title" style="padding: 5px;">Correo Electronico:</label>
-	    <input th:field="*{correo_electronico}" id="correo_electronico" name="correo_electronico" type="email" class="form-control" required autofocus="autofocus" style="padding: 10px; width: 50%;">
+	    <input th:field="*{correo_electronico}" id="correo_electronico" name="correo_electronico" type="email" class="form-control" 
+	    	required autofocus="autofocus" style="padding: 10px; width: 50%;"
+	    	autocomplete="off"
+	    	oninput="validarFormulario()" maxlength="50">
 	  </div>
+	  
+	  <p id="errorCorreo" style="color: red;"></p>
+	  
 	  <br><br>
 	  <div class="form-group">
-	    <button type="submit" class="btn btn-success t-Button-label" style="font-size: 15px;">
+	    <button type="submit" class="btn btn-success t-Button-label" style="font-size: 15px;" id="btnGuardar" name="btnGuardar">
           Guardar
         </button>
 	  </div>
@@ -38,10 +62,85 @@
 
   </div>  
 <script>
-
 	document.getElementById("titulo_doc").innerHTML = "Nueva Sucursal";
-	
+</script>
 
+<script>
+  	//validaciones
+	function validarFormulario() 
+	{
+	  var btnGuardar = document.getElementById("btnGuardar");
+	  
+	  // Obtener los elementos de error
+	  var errorCaracteresNombre = document.getElementById("errorCaracteresNombre");
+	  var errorCaracteresDireccion = document.getElementById("errorCaracteresDireccion");
+	  var errorNumeros = document.getElementById("errorNumeros");
+	  var errorCorreo = document.getElementById("errorCorreo");
+	  
+	  // Obtener los elementos de entrada
+	  var nombreInput = document.getElementById("nombre");
+	  var direccionInput = document.getElementById("direccion");
+	  var numerosInput = document.getElementById("telefono");
+	  var correoInput = document.getElementById("correo_electronico");
+	  
+	  // Validar nombre
+	  if (nombreInput.value.length > 50 || !/^(?=.*[a-zA-Z])[a-zA-Z0-9\s.,-]+(?:\s[a-zA-Z0-9\s.,-]+)?$/.test(nombreInput.value)) 
+	  {
+	    errorCaracteresNombre.textContent = "El texto excede el límite de 50 caracteres o no cumple el formato requerido";
+	    btnGuardar.disabled = true;
+	    btnGuardar.style.backgroundColor = "gray";
+	    return;
+	  } 
+	  else 
+	  {
+	    errorCaracteresNombre.textContent = "";
+	  }
+	  
+	  // Validar dirección
+	  if (direccionInput.value.length > 100 || !/^(?=.*[a-zA-Z])[a-zA-Z0-9\s.,-]+(?:\s[a-zA-Z0-9\s.,-]+)?$/.test(direccionInput.value)) 
+	  {
+	    errorCaracteresDireccion.textContent = "El texto excede el límite de 100 caracteres o no cumple el formato requerido";
+	    btnGuardar.disabled = true;
+	    btnGuardar.style.backgroundColor = "gray";
+	    return;
+	  } 
+	  else 
+	  {
+	    errorCaracteresDireccion.textContent = "";
+	  }
+	  
+	  // Validar números
+	  var regexNumeros = /^\d+(-\d+)*$/;
+	  if (!regexNumeros.test(numerosInput.value)) 
+	  {
+	    errorNumeros.textContent = "Ingresa un formato númerico válido";
+	    btnGuardar.disabled = true;
+	    btnGuardar.style.backgroundColor = "gray";
+	    return;
+	  } 
+	  else 
+	  {
+	    errorNumeros.textContent = "";
+	  }
+	  
+	  // Validar correo electrónico
+	  var regexCorreo = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+	  if (!regexCorreo.test(correoInput.value)) 
+	  {
+	    errorCorreo.textContent = "Ingresa un correo electrónico válido";
+	    btnGuardar.disabled = true;
+	    btnGuardar.style.backgroundColor = "gray";
+	    return;
+	  } 
+	  else 
+	  {
+	    errorCorreo.textContent = "";
+	  }
+	  
+	  // Habilitar el botón de guardar si todas las validaciones pasan
+	  btnGuardar.disabled = false;
+	  btnGuardar.style.backgroundColor = ""; // Restaurar el color original del botón
+	} 
 </script>
 
 </div>

@@ -15,22 +15,40 @@
 		<div class="form-group">
 			<label class="control-label">Nombre : </label> 
 			<input id="nombre" name="nombre" type="text" class="form-control" th:field="*{nombre}"
+				   autocomplete="off"
 				   required autofocus="autofocus">
 		</div>
+		
+		<p id="errorCaracteresNombre" style="color: red;"></p>
+		
 		<div class="form-group">
 			<label class="control-label">Apellido : </label> 
 			<input id="apellido" name="apellido" class="form-control" th:field="*{apellido}"
+				   autocomplete="off"
 				   required autofocus="autofocus">
 		</div>
+		
+		<p id="errorCaracteresApellido" style="color: red;"></p>
+		
 		<div class="form-group">
 			<label class="control-label">Correo : </label> 
-			<input id="email" name="apellido" type="email" class="form-control" th:field="*{email}"
-				   required autofocus="autofocus">
+			<input id="email" name="email" type="email" class="form-control" th:field="*{email}"
+				   autocomplete="off"
+				   required autofocus="autofocus"
+				   maxlength="255">
 		</div>
 		<div class="form-group">
 			<label class="control-label">Contraseña : </label> 
 			<input type="password" name="password" id="password" class="form-control" th:field="*{password}"
-				   required autofocus="autofocus">
+			       autocomplete="off"
+				   required autofocus="autofocus"
+				   maxlength="255">
+		</div>
+		<div class="form-group">
+			<label class="control-label">DNI:</label> 
+			<input type="text" name="dni" id="dni" class="form-control" th:field="*{dni}"
+				   autocomplete="off"
+				   required autofocus="autofocus" maxlength="8" pattern="[0-9]{1,8}">
 		</div>
 		<div class="form-group">
 			<label class="control-label">Sucursal : </label> 
@@ -54,16 +72,13 @@
 		</div>
 		<br>
 		<div class="form-group">
-				<button type="submit" class="btn btn-success">Guardar</button>
+				<button type="submit" class="btn btn-success" id="btnGuardar" name="btnGuardar">Guardar</button>
 		</div>
 	</form>
 
   </div>  
 <script>
-
 	document.getElementById("titulo_doc").innerHTML = "Nuevo Trabajador";
-	
-
 </script>
 
 </div>
@@ -98,6 +113,64 @@
 	  // Asignar el valor al input oculto
 	  inputRol.value = valorSeleccionado;
 	});
+</script>
+
+<script>
+	const nombreInput = document.getElementById("nombre");
+	const apellidoInput = document.getElementById("apellido");
+	const errorCaracteresNombre = document.getElementById("errorCaracteresNombre");
+	const errorCaracteresApellido = document.getElementById("errorCaracteresApellido");
+	const btnGuardar = document.getElementById("btnGuardar");
+	
+	const maximoCaracteres = 255;
+	const caracteresValidos = /^[A-Za-z\s]+$/;
+	
+	nombreInput.addEventListener("input", validarNombre);
+	apellidoInput.addEventListener("input", validarApellido);
+	
+	function validarNombre() 
+	{
+	    if (nombreInput.value.length > maximoCaracteres) 
+	    {
+	        errorCaracteresNombre.textContent = "Máximo 255 caracteres";
+	        btnGuardar.disabled = true;
+	        btnGuardar.style.backgroundColor = "gray";
+	    } 
+	    else if (!caracteresValidos.test(nombreInput.value)) 
+	    {
+	        errorCaracteresNombre.textContent = "Ingrese solo letras";
+	        btnGuardar.disabled = true;
+	        btnGuardar.style.backgroundColor = "gray";
+	    } 
+	    else 
+	    {
+	        errorCaracteresNombre.textContent = "";
+	        btnGuardar.disabled = false;
+	        btnGuardar.style.backgroundColor = "";
+	    }
+	}
+	
+	function validarApellido() 
+	{
+	    if (apellidoInput.value.length > maximoCaracteres) 
+	    {
+	        errorCaracteresApellido.textContent = "Máximo 255 caracteres";
+	        btnGuardar.disabled = true;
+	        btnGuardar.style.backgroundColor = "gray";
+	    } 
+	    else if (!caracteresValidos.test(apellidoInput.value)) 
+	    {
+	        errorCaracteresApellido.textContent = "Ingrese solo letras";
+	        btnGuardar.disabled = true;
+	        btnGuardar.style.backgroundColor = "gray";
+	    } 
+	    else 
+	    {
+	        errorCaracteresApellido.textContent = "";
+	        btnGuardar.disabled = false;
+	        btnGuardar.style.backgroundColor = "";
+	    }
+	}
 </script>
 
 </html>

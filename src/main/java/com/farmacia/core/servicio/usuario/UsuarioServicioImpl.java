@@ -31,7 +31,9 @@ public class UsuarioServicioImpl implements UsuarioServicio
 				registroDTO.getApellido(),
 				registroDTO.getEmail(),
 				registroDTO.getSucursal(),
-				passwordEncoder.encode(registroDTO.getPassword()));
+				passwordEncoder.encode(registroDTO.getPassword()),
+				registroDTO.getDni()
+		);
 		return usuarioRepositorio.save(usuario);
 	}
 	@Override
@@ -115,10 +117,32 @@ public class UsuarioServicioImpl implements UsuarioServicio
 		    String nombre = String.valueOf(infoUsuario[0]);
 		    String apellido = String.valueOf(infoUsuario[1]);
 		    String email = String.valueOf(infoUsuario[2]);
-		    String rolNombre = String.valueOf(infoUsuario[3]);
-		    String sucursalNombre = String.valueOf(infoUsuario[4]);
-		    infoUsuarios.add(new InfoUsuario(nombre, apellido, email, rolNombre, sucursalNombre));
+		    String dni = String.valueOf(infoUsuario[3]);
+		    String rolNombre = String.valueOf(infoUsuario[4]);
+		    String sucursalNombre = String.valueOf(infoUsuario[5]);
+		    infoUsuarios.add(new InfoUsuario(nombre, apellido, email, dni, rolNombre, sucursalNombre));
 		}
 		return infoUsuarios;
 	}
+	@Override
+	public Usuario buscarUsuarioPorDni(String username, String password) 
+	{
+		Usuario usuario = usuarioRepositorio.findByDniAndPassword(username, password);
+		if(usuario == null) 
+		{
+			return null;
+		}
+		return usuario;
+	}
+	@Override
+	public String recuperarEmailPorDni(String dni) 
+	{
+		Usuario usuario = usuarioRepositorio.findByDni(dni);
+		if(usuario == null) 
+		{
+			throw new UsernameNotFoundException("Usuario o password inválidos");
+		}
+		return usuario.getEmail();
+	}
+	
 }

@@ -5,14 +5,16 @@ public class InfoUsuario
 	private String nombre;
 	private String apellido;
 	private String email;
+	private String dni;
 	private String rolNombre;
 	private String sucursalNombre;
-	public InfoUsuario(String nombre, String apellido, String email, String rolNombre, String sucursalNombre) 
+	public InfoUsuario(String nombre, String apellido, String email, String dni, String rolNombre, String sucursalNombre) 
 	{
 		super();
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.email = email;
+		this.dni = dni;
 		this.rolNombre = rolNombre;
 		this.sucursalNombre = sucursalNombre;
 	}
@@ -39,6 +41,14 @@ public class InfoUsuario
 	public void setEmail(String email) 
 	{
 		this.email = email;
+	}
+	public String getDni() 
+	{
+		return dni;
+	}
+	public void setDni(String dni) 
+	{
+		this.dni = dni;
 	}
 	public String getRolNombre() 
 	{

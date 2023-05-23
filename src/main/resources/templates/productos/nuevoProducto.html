@@ -14,16 +14,26 @@
     <form th:action="@{/guardarProducto}" th:object="${producto}" method="POST">
 	  <div class="form-group">
 	    <label class="t-MediaList-title" style="padding: 5px;">Nombre:</label>
-	    <input th:field="*{nombre}" id="nombre" name="nombre" type="text" class="form-control" required autofocus="autofocus" style="padding: 10px; width: 50%;">
+	    <input th:field="*{nombre}" id="nombre" name="nombre" type="text" class="form-control" 
+	    	required autofocus="autofocus" style="padding: 10px; width: 50%;" maxlength="50"
+	    	autocomplete="off"
+	    	oninput="validarNombre(this)">
 	  </div>
+	  
+	  <p id="errorCaracteresNombre" style="color: red;"></p>
+	  
 	  <div class="form-group">
 	    <label class="t-MediaList-title" style="padding: 5px;">Precio:</label>
-	    <input th:field="*{precio}" id="precio" name="precio" type="number" class="form-control" required autofocus="autofocus" style="padding: 10px; width: 50%;">
+	    <input th:field="*{precio}" id="precio" name="precio" type="text" class="form-control" 
+	    	required autofocus="autofocus" style="padding: 10px; width: 50%;" 
+	    	oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); if (this.value <= 0) this.value = '';" 
+	    	maxlength="10">
+
 	  </div>
 	  	  
 	  <br><br>
 	  <div class="form-group">
-	    <button type="submit" class="btn btn-success t-Button-label" style="font-size: 15px;">
+	    <button type="submit" class="btn btn-success t-Button-label" style="font-size: 15px;" id="btnGuardar" name="btnGuardar">
           Guardar
         </button>
 	  </div>
@@ -31,10 +41,29 @@
 
   </div>  
 <script>
-
 	document.getElementById("titulo_doc").innerHTML = "Nuevo Producto";
+</script>
+<script>
+	function validarNombre(inputNombre) 
+	{
+	  var btnGuardar = document.getElementById("btnGuardar");
+	  var nombre = inputNombre.value;
+	  var caracteresEspeciales = /[^\w\s,-.]/;
 	
-
+	  if (caracteresEspeciales.test(nombre)) 
+	  {
+	    errorCaracteresNombre.textContent = "El nombre del producto no cumple con el formato permitido";
+	    btnGuardar.disabled = true;
+	    btnGuardar.style.backgroundColor = "gray";
+	  } 
+	  else 
+	  {
+	    errorCaracteresNombre.textContent = "";
+	    btnGuardar.disabled = false;
+	    btnGuardar.style.backgroundColor = ""; // Restablecer el color original
+	  }
+	}
+	
 </script>
 
 </div>

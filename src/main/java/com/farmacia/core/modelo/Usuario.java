@@ -26,17 +26,19 @@ public class Usuario
 			inverseJoinColumns = @JoinColumn(name = "rol_id",referencedColumnName = "id")
 			)
 	private Collection<Rol> roles;
+	private String dni;
 	//Constructores, getters y setters
 	public Usuario() 
 	{
 		this.nombre = "";
 		this.apellido = "";
 		this.email = "";
+		this.dni = "";
 		this.password = "";
 		this.sucursal = null;
 		this.roles = new ArrayList<Rol>();
 	}
-	public Usuario(String nombre, String apellido, String email, Sucursal sucursal, String password) 
+	public Usuario(String nombre, String apellido, String email, Sucursal sucursal, String password, String dni) 
 	{
 		super();
 		this.nombre = nombre;
@@ -44,6 +46,7 @@ public class Usuario
 		this.email = email;
 		this.password = password;
 		this.sucursal = sucursal;
+		this.dni = dni;
 	}
 	public Long getId() 
 	{
@@ -100,6 +103,14 @@ public class Usuario
 	public void setRoles(Collection<Rol> roles) 
 	{
 		this.roles = roles;
+	}
+	public String getDni() 
+	{
+		return dni;
+	}
+	public void setDni(String dni) 
+	{
+		this.dni = dni;
 	}
 	public String getNombrePrimerRol()
 	{

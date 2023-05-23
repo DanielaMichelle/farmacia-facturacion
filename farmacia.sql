@@ -58,12 +58,13 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   `email` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
   `sucursal_id` bigint(20) NOT NULL,
+  `dni` varchar(8) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`),
-  UNIQUE KEY `UKkfsp0s1tflm1cwlj8idhqsad0` (`email`),
+  UNIQUE KEY `uk_email` (`email`),
+  UNIQUE KEY `uk_dni` (`dni`),
   KEY `sucursal_id` (`sucursal_id`),
   CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`sucursal_id`) REFERENCES `sucursales` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 CREATE TABLE IF NOT EXISTS `usuarios_roles` (
   `usuario_id` bigint(20) NOT NULL,
   `rol_id` bigint(20) NOT NULL,
@@ -133,9 +134,9 @@ INSERT INTO `stock` (`id`, `cantidad`, `producto_id`) VALUES
 	(2, 15, 4),
 	(3, 10, 3),
 	(4, 25, 4);
-INSERT INTO `usuarios` (`id`, `nombre`, `apellido`, `email`, `password`, `sucursal_id`) VALUES
-	(1, 'Ricardo', 'Rivero', 'admin@ucsm.edu.pe', '$2a$10$61BHefHH5zuX3XNB0PXCQux6wwgKV7xKMv7MtxzB1uls9rtm0UqUe', 1),
-	(2, 'Daniela', 'Infantes', 'dani@ucsm.edu.pe', '$2a$10$61BHefHH5zuX3XNB0PXCQux6wwgKV7xKMv7MtxzB1uls9rtm0UqUe', 2);
+INSERT INTO `usuarios` (`id`, `nombre`, `apellido`, `dni`, `email`, `password`, `sucursal_id`) VALUES
+	(1, 'Ricardo', 'Rivero', '12345678', 'admin@ucsm.edu.pe', '$2a$10$61BHefHH5zuX3XNB0PXCQux6wwgKV7xKMv7MtxzB1uls9rtm0UqUe', 1),
+	(2, 'Daniela', 'Infantes', '87654321', 'dani@ucsm.edu.pe', '$2a$10$61BHefHH5zuX3XNB0PXCQux6wwgKV7xKMv7MtxzB1uls9rtm0UqUe', 2);
 INSERT INTO `usuarios_roles` (`usuario_id`, `rol_id`) VALUES
 	(1, 1),
 	(2, 2);

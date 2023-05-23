@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.farmacia.core.modelo.Usuario;
+import com.farmacia.core.seguridad.VerificadorSesion;
 import com.farmacia.core.servicio.usuario.UsuarioServicio;
 import com.farmacia.core.sesion.UserSession;
 
@@ -17,6 +18,7 @@ public class RegistroControlador
 	private UsuarioServicio usuarioServicio;
 	@Autowired
 	private UserSession userSession;
+	private VerificadorSesion verificadorSesion;
 	@GetMapping("/login")
 	public String iniciarSesion(Model model) 
 	{
@@ -31,10 +33,33 @@ public class RegistroControlador
 	    // Por ejemplo, podríamos verificar si el usuario y la contraseña coinciden con una cuenta existente
 	    // Si son correctos, redirigir al usuario a la página de inicio
 		Usuario usuarioIngresado = usuarioServicio.buscarUsuario(username, password);
+		Usuario usuarioIngresadoPorDni = usuarioServicio.buscarUsuarioPorDni(username, password);
 		if (usuarioIngresado != null)
 		{
 			this.setVisitante(usuarioIngresado);
 			String email = username;
+			String nombre = usuarioServicio.recuperarNombrePorEmail(email);
+			userSession.setNombre(nombre);
+			String apellido = usuarioServicio.recuperarApellidoPorEmail(email);
+			userSession.setApellido(apellido);
+			String nombrePerfil = usuarioServicio.recuperarNombrePerfilPorEmail(email);
+			userSession.setNombreRol(nombrePerfil);
+			Long idSucursal = usuarioServicio.recuperarIdSucursalPorEmail(email);
+			userSession.setIdSucursal(idSucursal);
+			String nombreSucursal = usuarioServicio.recuperarNombreSucursalPorEmail(email);
+			userSession.setNombreSucursal(nombreSucursal);
+			String mensaje_bienvenida = "Hola "
+					+ nombre + " " + apellido + ". "
+					+ "Tu Perfil es: " + nombrePerfil + ". "
+					+ "Tu Sucursal es: " + nombreSucursal  + ".";
+			model.addAttribute("mensaje_bienvenida", mensaje_bienvenida);
+			return "index";
+		}
+		//Si el usuario ingreso DNI correcto tambien se lo deja logearse
+		else if (usuarioIngresadoPorDni != null)
+		{
+			this.setVisitante(usuarioIngresadoPorDni);
+			String email = usuarioServicio.recuperarEmailPorDni(username);
 			String nombre = usuarioServicio.recuperarNombrePorEmail(email);
 			userSession.setNombre(nombre);
 			String apellido = usuarioServicio.recuperarApellidoPorEmail(email);
@@ -57,7 +82,7 @@ public class RegistroControlador
 		{
 			// Agregar un mensaje de error al modelo
 			model.addAttribute("error", "Credenciales inválidas!!");
-			model.addAttribute("sugerencia", "Asegúrate de ingresar bien el correo y contraseña.");
+			model.addAttribute("sugerencia", "Asegúrate de ingresar bien el correo/dni y contraseña.");
 			return "login";
 		}
 	}
@@ -69,7 +94,7 @@ public class RegistroControlador
 		return "login";
 	}
 	@GetMapping("/")
-	public String verPaginaDeInicio() 
+	public String verPaginaDeInicio(Model model) 
 	{
 		
 		if (this.getVisitante() == null)
@@ -78,7 +103,13 @@ public class RegistroControlador
 		}
 		else
 		{
-			return "index";
+			verificadorSesion = new VerificadorSesion(userSession);
+			String mensaje_bienvenida = "Hola "
+					+ userSession.getNombre() + " " + userSession.getApellido() + ". "
+					+ "Tu Perfil es: " + userSession.getNombreRol() + ". "
+					+ "Tu Sucursal es: " + userSession.getNombreSucursal()  + ".";
+			model.addAttribute("mensaje_bienvenida", mensaje_bienvenida);
+			return verificadorSesion.validarRuta("index");
 		}
 	}
 	public Usuario getVisitante() 

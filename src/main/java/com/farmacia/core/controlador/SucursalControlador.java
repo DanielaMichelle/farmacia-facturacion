@@ -1,4 +1,6 @@
 package com.farmacia.core.controlador;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,7 +49,7 @@ public class SucursalControlador
 		}
 	}
 	@PostMapping("/guardarSucursal")
-	public String guardarSucursal(@ModelAttribute("sucursal") Sucursal sucursal) 
+	public String guardarSucursal(@ModelAttribute("sucursal") Sucursal sucursal, HttpServletRequest request, Model model) 
 	{
 	    servicio.guardarSucursal(sucursal);
 	    return "redirect:/sucursales";
